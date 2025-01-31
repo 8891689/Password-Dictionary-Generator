@@ -99,12 +99,10 @@ Usage: wandian [-n num] [-t threads] [-l length] [-c charset] [-R] [-o outputFil
 ### 4. Combining Character Sets for Advanced Use
 
 ```bash
-./wandian -l 64 -c j -R | ./brainflayer -v -b hash160.blf -f hash160.bin -t priv -x -c uce > key.txt
+./wandian -l 1-256 -c all -R | ./brainflayer -v -b hash160.blf -f hash160.bin -t sha256 -c uce > key.txt
 ```
 
-**Description**: Generates random 64-character passwords (e.g., BTC, ETH, etc.), pipes them to `brainflayer` for processing, and outputs the results to `key.txt`.
-
-**Note**: Without `-R`, the program operates in incremental mode, supporting password lengths up to 20 characters. For lengths beyond 13-20 characters, use `-R` mode, which supports up to 256 characters.
+**Description**: Generates random 1-256 bit passwords (e.g. BTC, ETH, etc.), pipes them to `brainflayer` for processing, and outputs the result to `key.txt`. **Note**: Without `-R`, the program will run in incremental mode, supporting passwords up to 20 characters long. For lengths longer than 13-20 characters, use `-R` mode, which supports up to 256 characters .
 
 ## Predefined Character Sets
 
