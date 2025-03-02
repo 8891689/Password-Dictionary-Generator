@@ -22,7 +22,9 @@ Wandian is a high-performance and feature-rich password dictionary generator wri
 ### Compile Source Code
 
 ```bash
-gcc -o wandian wandian.c -lpthread
+gcc -O3 -o wandian wandian.c -lpthread
+
+gcc -O3 -o wandiancpp wandian.cpp -lpthread
 ```
 
 This command compiles the `wandian.c` source file and links the POSIX threads library (`-lpthread`), generating an executable named `wandian`.
@@ -59,7 +61,7 @@ Usage: wandian [-n num] [-t threads] [-l length] [-c charset] [-R] [-o outputFil
 - **d**: Numbers `[0-9]`
 - **u**: Lowercase letters `[a-z]`
 - **i**: Uppercase letters `[A-Z]`
-- **h**: Hexadecimal lowercase `[0-9a-f]`
+- **h**: Number case `[0-9a-fA-Z]`
 - **j**: Hexadecimal uppercase `[0-9A-F]`
 - **k**: Both lowercase and uppercase letters `[a-zA-Z]`
 - **s**: Special characters `[ !"#$%&'()*+,-./:;<=>?@[\]^_{|}~]`
@@ -99,22 +101,26 @@ Usage: wandian [-n num] [-t threads] [-l length] [-c charset] [-R] [-o outputFil
 ### 4. Combining Character Sets for Advanced Use
 
 ```bash
+./wandian -l 64 -c j -R | ./brainflayer -v -b hash160.blf -f hash160.bin -t priv -x -c uce > key.txt
+
 ./wandian -l 1-256 -c all -R | ./brainflayer -v -b hash160.blf -f hash160.bin -t sha256 -c uce > key.txt
 ```
 
-**Description**: Generates random 1-256 bit passwords (e.g. BTC, ETH, etc.), pipes them to `brainflayer` for processing, and outputs the result to `key.txt`. **Note**: Without `-R`, the program will run in incremental mode, supporting passwords up to 20 characters long. For lengths longer than 13-20 characters, use `-R` mode, which supports up to 256 characters .
+**Description**: Generates random 64-character passwords (e.g., BTC, ETH, etc.), pipes them to `brainflayer` for processing, and outputs the results to `key.txt`.
+
+**Note**: Without `-R`, the program operates in incremental mode, supporting password lengths up to 20 characters. For lengths beyond 13-20 characters, use `-R` mode, which supports up to 256 characters.
 
 ## Predefined Character Sets
 
-| Identifier | Characters                                    | Description                         |
-|------------|-----------------------------------------------|-------------------------------------|
-| d          | `0123456789`                                  | Numbers `[0-9]`                     |
-| u          | `abcdefghijklmnopqrstuvwxyz`                  | Lowercase letters `[a-z]`           |
-| i          | `ABCDEFGHIJKLMNOPQRSTUVWXYZ`                  | Uppercase letters `[A-Z]`           |
-| h          | `0123456789abcdef`                            | Hexadecimal lowercase `[0-9a-f]`    |
-| j          | `0123456789ABCDEF`                            | Hexadecimal uppercase `[0-9A-F]`    |
-| k          | `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ` | Both lowercase and uppercase letters `[a-zA-Z]` |
-| s          | `!"#$%&'()*+,-./:;<=>?@[\]^_{|}~`            | Special characters                  |
+| Identifier | Characters                                                                 | Description                         |
+|------------|----------------------------------------------------------------------------|-------------------------------------|
+| d          | `0123456789`                                                               | Numbers `[0-9]`                     |
+| u          | `abcdefghijklmnopqrstuvwxyz`                                               | Lowercase letters `[a-z]`           |
+| i          | `ABCDEFGHIJKLMNOPQRSTUVWXYZ`                                               | Uppercase letters `[A-Z]`           |
+| h          | `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`           | Number case `[0-9a-fA-Z]`    |
+| j          | `0123456789ABCDEF`                                                         | Hexadecimal uppercase `[0-9A-F]`    |
+| k          | `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`                     | Both lowercase and uppercase letters `[a-zA-Z]` |
+| s          | `!"#$%&'()*+,-./:;<=>?@[\]^_{|}~`                                          | Special characters                  |
 | all        | ``abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{} ;:'",.<>?/~`` | All available characters            |
 
 ### Combining Character Sets
@@ -122,7 +128,8 @@ Usage: wandian [-n num] [-t threads] [-l length] [-c charset] [-R] [-o outputFil
 To create a custom character set, list the desired identifiers separated by commas. For example:
 
 - `-c d,u,i`: Combines numbers, lowercase letters, and uppercase letters.
-- `-c h,j,s`: Combines hexadecimal (both cases) and special characters.
+- `-c j`: The private key pattern must be 64 bits to match the original hexadecimal private key, such as BTC or ETH.
+- `-c h,s`: Combines numeric case (in both cases) and special characters.
 - `-c all`: Includes all available characters.
 
 **Note**: Duplicate characters across multiple sets are automatically removed, ensuring each character in the final set is unique.
