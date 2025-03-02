@@ -15,7 +15,7 @@ const Charset CHARSETS[] = {
     {"d", "0123456789"},                                         // d | [0-9]
     {"u", "abcdefghijklmnopqrstuvwxyz"},                       // u | [a-z]
     {"i", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"},                       // i | [A-Z]
-    {"h", "0123456789abcdef"},                                  // h | [0-9a-f]
+    {"h", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"},                                  // h | [0-9a-f]
     {"j", "0123456789ABCDEF"},                                  // j | [0-9A-F]
     {"k", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"},  // k | [a-zA-Z]
     {"s", " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"},                // s | 特殊字符
@@ -231,7 +231,7 @@ int main(int argc, char *argv[]) {
     long long numPasswords = 10000; // 默认生成一万个密码
     int minLength = 8;
     int maxLength = 9;
-    int threads = 4;  // 默认线程数为4
+    int threads = 1;  // 默认线程数为4
     int random = 0;   // 默认递增模式
     char *outputFile = NULL; // 默认输出到控制台
     char selectedCharsets[1024] = {0}; // 存储用户选择的字符集标识
