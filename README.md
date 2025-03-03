@@ -24,7 +24,7 @@ Wandian is a high-performance and feature-rich password dictionary generator wri
 ```bash
 gcc -O3 -o wandian wandian.c -lpthread
 
-gcc -O3 -o wandiancpp wandian.cpp -lpthread
+g++ -O3 -o wandiancpp wandian.cpp -lpthread
 ```
 
 This command compiles the `wandian.c` source file and links the POSIX threads library (`-lpthread`), generating an executable named `wandian`.
